@@ -432,6 +432,7 @@ MonoBehaviour:
   displacement: 0.1
   shape: 0
   instanceScale: 2
+  type: 0
   seed: 0
   domain:
     translation:
@@ -446,6 +447,7 @@ MonoBehaviour:
       x: 8
       y: 8
       z: 8
+  dimensions: 3
 --- !u!4 &2100719101
 Transform:
   m_ObjectHideFlags: 0
@@ -455,7 +457,7 @@ Transform:
   m_GameObject: {fileID: 2100719099}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0944055, y: -0.033783138, z: 0.28492785}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
