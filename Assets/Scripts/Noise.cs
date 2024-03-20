@@ -19,13 +19,25 @@ public static partial class Noise {
         [Min(1)]
         public int frequency;
 
+        [Range(1, 6)]
+        public int octaves;
+
+        [Range(2, 4)]
+        public int lacunarity;
+
+        [Range(0f, 1f)]
+        public float persistence;
+
         public static Settings Default => new Settings {
-            frequency = 4
+            frequency = 4, 
+            octaves = 1, 
+            lacunarity = 2, 
+            persistence = 0.5f
         };
     }
 
     public interface INoise {
-        float4 GetNoise4 (float4x3 positions, SmallXXHash4 hash);
+        float4 GetNoise4 (float4x3 positions, SmallXXHash4 hash, int frequency);
     }
 
     [BurstCompile(FloatPrecision.Standard, FloatMode.Fast, CompileSynchronously = true)]
@@ -45,7 +57,16 @@ public static partial class Noise {
             float4x3 position = domainTRS.TransformVectors(transpose(positions[i]));
             var hash = SmallXXHash4.Seed(settings.seed);
             int frequency = settings.frequency;
-            noise[i] = default(N).GetNoise4(frequency * position, hash);
+            float amplitude = 1f, amplitudeSum = 0f;
+            float4 sum = 0f;
+
+            for (int o = 0; o < settings.octaves; o++) {
+                sum += amplitude * default(N).GetNoise4(position, hash + o, frequency);
+                frequency *= settings.lacunarity;
+                amplitude *= settings.persistence;
+                amplitudeSum += amplitude;
+            }
+            noise[i] = sum / amplitudeSum;
         }
 
         public static JobHandle ScheduleParallel(
