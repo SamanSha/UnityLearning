@@ -11,11 +11,14 @@ public class ProceduralMesh : MonoBehaviour {
 
     static MeshJobScheduleDelegate[] jobs = {
         MeshJob<SquareGrid, SingleStream>.ScheduleParallel, 
-        MeshJob<SharedSquareGrid, SingleStream>.ScheduleParallel
+        MeshJob<SharedSquareGrid, SingleStream>.ScheduleParallel, 
+        MeshJob<SharedTriangleGrid, SingleStream>.ScheduleParallel, 
+        MeshJob<PointyHexagonGrid, SingleStream>.ScheduleParallel, 
+        MeshJob<FlatHexagonGrid, SingleStream>.ScheduleParallel
     };
 
     public enum MeshType {
-        SquareGrid, SharedSquareGrid
+        SquareGrid, SharedSquareGrid, SharedTriangleGrid, PointyHexagonGrid, FlatHexagonGrid
     };
 
     [SerializeField]
@@ -25,6 +28,8 @@ public class ProceduralMesh : MonoBehaviour {
 
     [SerializeField, Range(1, 50)]
     int resolution = 1;
+
+    Vector3[] vertices;
 
     void Awake () {
         mesh = new Mesh {
@@ -39,6 +44,8 @@ public class ProceduralMesh : MonoBehaviour {
     void Update () {
         GenerateMesh();
         enabled = false;
+
+        vertices = mesh.vertices;
     }
 
     void GenerateMesh () {
@@ -48,5 +55,16 @@ public class ProceduralMesh : MonoBehaviour {
         jobs[(int)meshType](mesh, meshData, resolution, default).Complete();
 
         Mesh.ApplyAndDisposeWritableMeshData(meshDataArray, mesh);
+    }
+
+    void OnDrawGizmos () {
+        if (mesh == null) {
+            return;
+        }
+
+        Gizmos.color = Color.cyan;
+        for (int i = 0; i < vertices.Length; i++) {
+            Gizmos.DrawSphere(vertices[i], 0.02f);
+        }
     }
 }
