@@ -12,13 +12,16 @@ public class ProceduralMesh : MonoBehaviour {
     static MeshJobScheduleDelegate[] jobs = {
         MeshJob<SquareGrid, SingleStream>.ScheduleParallel, 
         MeshJob<SharedSquareGrid, SingleStream>.ScheduleParallel, 
-        MeshJob<SharedTriangleGrid, SingleStream>.ScheduleParallel, 
+        MeshJob<SharedTriangleGrid, SingleStream>.ScheduleParallel,
+        MeshJob<FlatHexagonGrid, SingleStream>.ScheduleParallel,
         MeshJob<PointyHexagonGrid, SingleStream>.ScheduleParallel, 
-        MeshJob<FlatHexagonGrid, SingleStream>.ScheduleParallel
+        MeshJob<CubeSphere, SingleStream>.ScheduleParallel, 
+        MeshJob<UVSphere, SingleStream>.ScheduleParallel
     };
 
     public enum MeshType {
-        SquareGrid, SharedSquareGrid, SharedTriangleGrid, PointyHexagonGrid, FlatHexagonGrid
+        SquareGrid, SharedSquareGrid, SharedTriangleGrid, 
+        FlatHexagonGrid, PointyHexagonGrid, CubeSphere, UVSphere
     };
 
     [SerializeField]
@@ -29,7 +32,23 @@ public class ProceduralMesh : MonoBehaviour {
     [SerializeField, Range(1, 50)]
     int resolution = 1;
 
-    Vector3[] vertices;
+    Vector3[] vertices, normals;
+
+    Vector4[] tangents;
+
+    [System.Flags]
+    public enum GizmoMode { Nothing = 0, Vertices = 1, Normals = 0b10, Tangents = 0b100 }
+
+    [SerializeField]
+    GizmoMode gizmos;
+
+    public enum MaterialMode { Flat, Ripple, LatLonMap, CubeMap }
+
+    [SerializeField]
+    MaterialMode material;
+
+    [SerializeField]
+    Material[] materials;
 
     void Awake () {
         mesh = new Mesh {
@@ -45,7 +64,11 @@ public class ProceduralMesh : MonoBehaviour {
         GenerateMesh();
         enabled = false;
 
-        vertices = mesh.vertices;
+        vertices = null;
+        normals = null;
+        tangents = null;
+
+        GetComponent<MeshRenderer>().material = materials[(int)material];
     }
 
     void GenerateMesh () {
@@ -58,13 +81,40 @@ public class ProceduralMesh : MonoBehaviour {
     }
 
     void OnDrawGizmos () {
-        if (mesh == null) {
+        if (gizmos == GizmoMode.Nothing || mesh == null) {
             return;
         }
 
-        Gizmos.color = Color.cyan;
+        bool drawVertices = (gizmos & GizmoMode.Vertices) != 0;
+        bool drawNormals = (gizmos & GizmoMode.Normals) != 0;
+        bool drawTangents = (gizmos & GizmoMode.Tangents) != 0;
+
+        if (vertices == null) {
+            vertices = mesh.vertices;
+        }
+        if (drawNormals && normals == null) {
+            normals = mesh.normals;
+        }
+        if (drawTangents && tangents == null) {
+            tangents = mesh.tangents;
+        }
+
+        //Gizmos.color = Color.cyan;
+        Transform t = transform;
         for (int i = 0; i < vertices.Length; i++) {
-            Gizmos.DrawSphere(vertices[i], 0.02f);
+            Vector3 position = t.TransformPoint(vertices[i]);
+            if (drawVertices) {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawSphere(position, 0.02f);
+            }
+            if (drawNormals) {
+                Gizmos.color = Color.green;
+                Gizmos.DrawRay(position, t.TransformDirection(normals[i]) * 0.2f);
+            }
+            if (drawTangents) {
+                Gizmos.color = Color.red;
+                Gizmos.DrawRay(position, t.TransformDirection(tangents[i]) * 0.2f);
+            }
         }
     }
 }

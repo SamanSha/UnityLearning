@@ -368,6 +368,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9af6e528bf405148aa7c1ba71ce41d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshType: 0
+  resolution: 1
+  gizmos: 0
+  material: 0
+  materials:
+  - {fileID: 2100000, guid: 9bc819149763ed94eb7fb91a49eb615f, type: 2}
+  - {fileID: 2100000, guid: 9840d18da4c78444db5e228b533579e5, type: 2}
+  - {fileID: 2100000, guid: ea1cfc8d8eee2f84cb2aac37339dfaf9, type: 2}
+  - {fileID: 2100000, guid: f860e2a3ecece644b9c14a0d7119cfad, type: 2}
 --- !u!23 &281806114
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -387,8 +396,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 9bc819149763ed94eb7fb91a49eb615f, type: 2}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
