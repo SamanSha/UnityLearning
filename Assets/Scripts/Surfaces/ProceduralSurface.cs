@@ -34,10 +34,20 @@ public class ProceduralSurface : MonoBehaviour {
 
     static SurfaceJobScheduleDelegate[,] surfaceJobs = {
         {
+            SurfaceJob<Lattice1D<LatticeNormal, Value>>.ScheduleParallel,
+            SurfaceJob<Lattice2D<LatticeNormal, Value>>.ScheduleParallel,
+            SurfaceJob<Lattice3D<LatticeNormal, Value>>.ScheduleParallel
+        }, 
+        {
             SurfaceJob<Simplex1D<Simplex>>.ScheduleParallel,
             SurfaceJob<Simplex2D<Simplex>>.ScheduleParallel,
             SurfaceJob<Simplex3D<Simplex>>.ScheduleParallel
         },
+        {
+            SurfaceJob<Simplex1D<Smoothstep<Turbulence<Simplex>>>>.ScheduleParallel,
+            SurfaceJob<Simplex2D<Smoothstep<Turbulence<Simplex>>>>.ScheduleParallel,
+            SurfaceJob<Simplex3D<Smoothstep<Turbulence<Simplex>>>>.ScheduleParallel
+        }, 
         {
             SurfaceJob<Simplex1D<Value>>.ScheduleParallel,
             SurfaceJob<Simplex2D<Value>>.ScheduleParallel,
@@ -46,7 +56,7 @@ public class ProceduralSurface : MonoBehaviour {
     };
 
     public enum NoiseType {
-        Simplex, SimplexValue
+        PerlinValue, Simplex, SimplexSmoothTurbulence, SimplexValue
     }
 
     [SerializeField]

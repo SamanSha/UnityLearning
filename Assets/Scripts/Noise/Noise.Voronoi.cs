@@ -23,7 +23,7 @@ public static partial class Noise {
         where D : struct, IVoronoiDistance 
         where F : struct, IVoronoiFunction {
 
-        public float4 GetNoise4 (float4x3 positions, SmallXXHash4 hash, int frequency) {
+        public Sample4 GetNoise4 (float4x3 positions, SmallXXHash4 hash, int frequency) {
             var l = default(L);
             var d = default(D);
             LatticeSpan4 x = l.GetLatticeSpan4(positions.c0, frequency);
@@ -43,7 +43,7 @@ public static partial class Noise {
         where D : struct, IVoronoiDistance 
         where F : struct, IVoronoiFunction {
 
-        public float4 GetNoise4 (float4x3 positions, SmallXXHash4 hash, int frequency) {
+        public Sample4 GetNoise4 (float4x3 positions, SmallXXHash4 hash, int frequency) {
             var l = default(L);
             var d = default(D);
             LatticeSpan4
@@ -74,7 +74,7 @@ public static partial class Noise {
         where D : struct, IVoronoiDistance 
         where F : struct, IVoronoiFunction {
 
-        public float4 GetNoise4 (float4x3 positions, SmallXXHash4 hash, int frequency) {
+        public Sample4 GetNoise4 (float4x3 positions, SmallXXHash4 hash, int frequency) {
             var l = default(L);
             var d = default(D);
             LatticeSpan4
