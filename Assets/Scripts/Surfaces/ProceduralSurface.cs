@@ -34,6 +34,19 @@ public class ProceduralSurface : MonoBehaviour {
 
     static SurfaceJobScheduleDelegate[,] surfaceJobs = {
         {
+            SurfaceJob<Lattice1D<LatticeNormal, Perlin>>.ScheduleParallel,
+            SurfaceJob<Lattice2D<LatticeNormal, Perlin>>.ScheduleParallel,
+            SurfaceJob<Lattice3D<LatticeNormal, Perlin>>.ScheduleParallel
+        },
+        {
+            SurfaceJob<Lattice1D<LatticeNormal, Smoothstep<Turbulence<Perlin>>>>
+                .ScheduleParallel,
+            SurfaceJob<Lattice2D<LatticeNormal, Smoothstep<Turbulence<Perlin>>>>
+                .ScheduleParallel,
+            SurfaceJob<Lattice3D<LatticeNormal, Smoothstep<Turbulence<Perlin>>>>
+                .ScheduleParallel
+        }, 
+        {
             SurfaceJob<Lattice1D<LatticeNormal, Value>>.ScheduleParallel,
             SurfaceJob<Lattice2D<LatticeNormal, Value>>.ScheduleParallel,
             SurfaceJob<Lattice3D<LatticeNormal, Value>>.ScheduleParallel
@@ -52,11 +65,28 @@ public class ProceduralSurface : MonoBehaviour {
             SurfaceJob<Simplex1D<Value>>.ScheduleParallel,
             SurfaceJob<Simplex2D<Value>>.ScheduleParallel,
             SurfaceJob<Simplex3D<Value>>.ScheduleParallel
+        },
+        {
+            SurfaceJob<Voronoi1D<LatticeNormal, Worley, F1>>.ScheduleParallel,
+            SurfaceJob<Voronoi2D<LatticeNormal, Worley, F1>>.ScheduleParallel,
+            SurfaceJob<Voronoi3D<LatticeNormal, Worley, F1>>.ScheduleParallel
+        },
+        {
+            SurfaceJob<Voronoi1D<LatticeNormal, Worley, F2>>.ScheduleParallel,
+            SurfaceJob<Voronoi2D<LatticeNormal, Worley, F2>>.ScheduleParallel,
+            SurfaceJob<Voronoi3D<LatticeNormal, Worley, F2>>.ScheduleParallel
+        },
+        {
+            SurfaceJob<Voronoi1D<LatticeNormal, Worley, F2MinusF1>>.ScheduleParallel,
+            SurfaceJob<Voronoi2D<LatticeNormal, Worley, F2MinusF1>>.ScheduleParallel,
+            SurfaceJob<Voronoi3D<LatticeNormal, Worley, F2MinusF1>>.ScheduleParallel
         }
     };
 
     public enum NoiseType {
-        PerlinValue, Simplex, SimplexSmoothTurbulence, SimplexValue
+        Perlin, PerlinSmoothTurbulence, PerlinValue, 
+        Simplex, SimplexSmoothTurbulence, SimplexValue, 
+        VoronoiWorleyF1, VoronoiWorleyF2, VoronoiWorleyF2MinusF1
     }
 
     [SerializeField]
