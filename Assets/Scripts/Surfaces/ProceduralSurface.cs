@@ -177,12 +177,15 @@ public class ProceduralSurface : MonoBehaviour {
     [SerializeField]
     MeshOptimizationMode meshOptimization;
 
+    static int materialIsPlaneId = Shader.PropertyToID("_IsPlane");
+
     void Awake () {
         mesh = new Mesh {
             name = "Procedural Mesh"
         };
         //GenerateMesh();
         GetComponent<MeshFilter>().mesh = mesh;
+        materials[(int)displacement] = new Material(materials[(int)displacement]);
     }
 
     void OnValidate () => enabled = true;
@@ -196,6 +199,11 @@ public class ProceduralSurface : MonoBehaviour {
         tangents = null;
         triangles = null;
 
+        if (material == MaterialMode.Displacement) {
+            materials[(int)MaterialMode.Displacement].SetFloat(
+                materialIsPlaneId, meshType < MeshType.CubeSphere ? 1f : 0f
+            );
+        }
         GetComponent<MeshRenderer>().material = materials[(int)material];
     }
 
@@ -206,9 +214,10 @@ public class ProceduralSurface : MonoBehaviour {
         
         surfaceJobs[(int)noiseType, dimensions - 1](
             meshData, resolution, noiseSettings, domain, displacement, 
+            meshType < MeshType.CubeSphere, 
             meshJobs[(int)meshType](
                 mesh, meshData, resolution, default, 
-                new Vector3(0f, Mathf.Abs(displacement)), true
+                Vector3.one * Mathf.Abs(displacement), true
             )
         ).Complete();
 
