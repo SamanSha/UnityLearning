@@ -51,13 +51,16 @@ public class MovingSphere : MonoBehaviour {
 
     int stepsSinceLastGrounded, stepsSinceLastJump;
 
+    Vector3 upAxis, rightAxis, forwardAxis;
+
     void OnValidate () {
         minGroundDotProduct = Mathf.Cos(maxGroundAngle * Mathf.Deg2Rad);
         minStairsDotProduct = Mathf.Cos(maxStairsAngle * Mathf.Deg2Rad);
     }
 
     void Awake () {
-        body = GetComponent<Rigidbody>();    
+        body = GetComponent<Rigidbody>();
+        body.useGravity = false;
         OnValidate();
     }
 
@@ -68,19 +71,16 @@ public class MovingSphere : MonoBehaviour {
         playerInput = Vector2.ClampMagnitude(playerInput, 1f);
 
         if (playerInputSpace) {
-            Vector3 forward = playerInputSpace.forward;
-            forward.y = 0f;
-            forward.Normalize();
-            Vector3 right = playerInputSpace.right;
-            right.y = 0f;
-            right.Normalize();
-            desiredVelocity = 
-                (forward * playerInput.y + right * playerInput.x) * maxSpeed;
+            rightAxis = ProjectDirectionOnPlane(playerInputSpace.right, upAxis);
+            forwardAxis =
+                ProjectDirectionOnPlane(playerInputSpace.forward, upAxis);
         }
         else {
-            desiredVelocity =
-            new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
+            rightAxis = ProjectDirectionOnPlane(Vector3.right, upAxis);
+            forwardAxis = ProjectDirectionOnPlane(Vector3.forward, upAxis);
         }
+        desiredVelocity =
+            new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
 
         desiredJump |= Input.GetButtonDown("Jump");
 
@@ -90,13 +90,17 @@ public class MovingSphere : MonoBehaviour {
     }
 
     void FixedUpdate () {
+        Vector3 gravity = CustomGravity.GetGravity(body.position, out upAxis);
         UpdateState();
         AdjustVelocity();
 
         if (desiredJump) {
             desiredJump = false;
-            Jump();
+            Jump(gravity);
         }
+
+        velocity += gravity * Time.deltaTime;
+
         body.velocity = velocity;
         ClearState();
     }
@@ -120,11 +124,11 @@ public class MovingSphere : MonoBehaviour {
             }
         }
         else {
-            contactNormal = Vector3.up;
+            contactNormal = upAxis;
         }
     }
 
-    void Jump() {
+    void Jump (Vector3 gravity) {
         Vector3 jumpDirection;
         if (OnGround) {
             jumpDirection = contactNormal;
@@ -145,8 +149,8 @@ public class MovingSphere : MonoBehaviour {
 
         stepsSinceLastJump = 0;
         jumpPhase += 1;
-        float jumpSpeed = Mathf.Sqrt(-2f * Physics.gravity.y * jumpHeight);
-        jumpDirection = (jumpDirection + Vector3.up).normalized;
+        float jumpSpeed = Mathf.Sqrt(2f * gravity.magnitude * jumpHeight);
+        jumpDirection = (jumpDirection + upAxis).normalized;
         float alignedSpeed = Vector3.Dot(velocity, jumpDirection);
         if (alignedSpeed > 0f) {
             jumpSpeed = Mathf.Max(jumpSpeed - alignedSpeed, 0f);
@@ -166,24 +170,25 @@ public class MovingSphere : MonoBehaviour {
         float minDot = GetMinDot(collision.gameObject.layer);
         for (int i = 0; i < collision.contactCount; i++) {
             Vector3 normal = collision.GetContact(i).normal;
-            if (normal.y >= minDot) {
+            float upDot = Vector3.Dot(upAxis, normal);
+            if (upDot >= minDot) {
                 groundContactCount += 1;
                 contactNormal += normal;
             }
-            else if (normal.y > -0.01f) {
+            else if (upDot > -0.01f) {
                 steepContactCount += 1;
                 steepNormal += normal;
             }
         }
     }
 
-    Vector3 ProjectOnContactPlane (Vector3 vector) {
-        return vector - contactNormal * Vector3.Dot(vector, contactNormal);
+    Vector3 ProjectDirectionOnPlane (Vector3 direction, Vector3 normal) {
+        return (direction - normal * Vector3.Dot(direction, normal)).normalized;
     }
 
     void AdjustVelocity () {
-        Vector3 xAxis = ProjectOnContactPlane(Vector3.right).normalized;
-        Vector3 zAxis = ProjectOnContactPlane(Vector3.forward).normalized;
+        Vector3 xAxis = ProjectDirectionOnPlane(rightAxis, contactNormal);
+        Vector3 zAxis = ProjectDirectionOnPlane(forwardAxis, contactNormal);
 
         float currentX = Vector3.Dot(velocity, xAxis);
         float currentZ = Vector3.Dot(velocity, zAxis);
@@ -208,12 +213,13 @@ public class MovingSphere : MonoBehaviour {
             return false;
         }
         if (!Physics.Raycast(
-            body.position, Vector3.down, out RaycastHit hit, 
+            body.position, -upAxis, out RaycastHit hit, 
             probeDistance, probeMask
         )) {
             return false;
         }
-        if (hit.normal.y < GetMinDot(hit.collider.gameObject.layer)) {
+        float upDot = Vector3.Dot(upAxis, hit.normal);
+        if (upDot < GetMinDot(hit.collider.gameObject.layer)) {
             return false;
         }
 
@@ -234,7 +240,8 @@ public class MovingSphere : MonoBehaviour {
     bool CheckSteepContacts () {
         if (steepContactCount > 1) {
             steepNormal.Normalize();
-            if (steepNormal.y >= minGroundDotProduct) {
+            float upDot = Vector3.Dot(upAxis, steepNormal);
+            if (upDot >= minGroundDotProduct) {
                 groundContactCount = 1;
                 contactNormal = steepNormal;
                 return true;
