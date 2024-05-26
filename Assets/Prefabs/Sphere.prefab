@@ -126,11 +126,22 @@ MonoBehaviour:
   jumpHeight: 2
   maxAirJumps: 0
   maxGroundAngle: 46
+  maxStairsAngle: 50
   maxSnapSpeed: 100
   probeDistance: 1
   probeMask:
     serializedVersion: 2
     m_Bits: 1075
+  stairsMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  climbMask:
+    serializedVersion: 2
+    m_Bits: 3891
+  playerInputSpace: {fileID: 0}
+  maxClimbAngle: 140
+  normalMaterial: {fileID: 2100000, guid: cc1a4c84e257d9246a44917900fec31c, type: 2}
+  climbingMaterial: {fileID: 2100000, guid: d5d971aada7b1f941b402afa7543e8eb, type: 2}
 --- !u!96 &6094465193985596122
 TrailRenderer:
   serializedVersion: 3
