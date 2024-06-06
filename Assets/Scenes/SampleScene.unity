@@ -1463,6 +1463,10 @@ PrefabInstance:
       propertyPath: playerInputSpace
       value: 
       objectReference: {fileID: 1115024901}
+    - target: {fileID: 4377350451149750139, guid: e7ed37d416e6c9e4090e2ca6e677a97b, type: 3}
+      propertyPath: swimmingMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 371177bad1bdbb643a5f6622fef70f82, type: 2}
     - target: {fileID: 4586343095712703486, guid: e7ed37d416e6c9e4090e2ca6e677a97b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.48

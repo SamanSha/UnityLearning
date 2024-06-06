@@ -19354,7 +19354,7 @@ PrefabInstance:
     - target: {fileID: 4377350451149750139, guid: e7ed37d416e6c9e4090e2ca6e677a97b, type: 3}
       propertyPath: swimmingMaterial
       value: 
-      objectReference: {fileID: 2100000, guid: 371177bad1bdbb643a5f6622fef70f82, type: 2}
+      objectReference: {fileID: 2100000, guid: cc1a4c84e257d9246a44917900fec31c, type: 2}
     - target: {fileID: 4377350451149750139, guid: e7ed37d416e6c9e4090e2ca6e677a97b, type: 3}
       propertyPath: waterMask.m_Bits
       value: 16
