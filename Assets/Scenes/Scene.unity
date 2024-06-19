@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f48440aebfce245a22ac44106ad6f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2592180740989915599, guid: 29a0bf27eaf71c748a1c61f08a14f22d, type: 3}
+  shapeFactory: {fileID: 11400000, guid: e22f539dd1b8fbc4d9cf8efff10bf8fe, type: 2}
   storage: {fileID: 345112939}
   createKey: 99
   saveKey: 115
