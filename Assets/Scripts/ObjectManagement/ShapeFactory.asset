@@ -20,3 +20,4 @@ MonoBehaviour:
   - {fileID: 2100000, guid: aac6cab27b29d7441808096748aae4d1, type: 2}
   - {fileID: 2100000, guid: 51ceba7d3bbfe6748ab3eada6bf21e80, type: 2}
   - {fileID: 2100000, guid: a689c769b3445d248a4b15cbc7751b2c, type: 2}
+  recycle: 1
