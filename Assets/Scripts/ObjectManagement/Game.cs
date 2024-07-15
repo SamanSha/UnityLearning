@@ -16,7 +16,7 @@ public class Game : PersistableObject {
     [SerializeField] KeyCode loadKey = KeyCode.L;
     [SerializeField] KeyCode newGameKey = KeyCode.N;
 
-    const int saveVersion = 3;
+    const int saveVersion = 4;
 
     List<Shape> shapes;
 
@@ -102,6 +102,10 @@ public class Game : PersistableObject {
     }
 
     void FixedUpdate () {
+        for (int i = 0; i < shapes.Count; i++) {
+            shapes[i].GameUpdate();
+        }
+
         creationProgress += Time.deltaTime * CreationSpeed;
         while (creationProgress >= 1f) {
             creationProgress -= 1f;
@@ -132,16 +136,7 @@ public class Game : PersistableObject {
 
     void CreateShape () {
         Shape instance = shapeFactory.GetRandom();
-        Transform t = instance.transform;
-        t.localPosition = GameLevel.Current.SpawnPoint;
-        t.localRotation = Random.rotation;
-        t.localScale = Vector3.one * Random.Range(0.1f, 1f);
-        instance.SetColor(Random.ColorHSV(
-            hueMin: 0f, hueMax: 1f, 
-            saturationMin: 0.5f, saturationMax: 1f, 
-            valueMin: 0.25f, valueMax: 1f, 
-            alphaMin: 1f, alphaMax: 1f
-        ));
+        GameLevel.Current.ConfigureSpawn(instance);
         shapes.Add(instance);
     }
 

@@ -9,14 +9,12 @@ public class GameLevel : PersistableObject {
 
     public static GameLevel Current { get; private set; }
 
-    public Vector3 SpawnPoint {
-        get {
-            return spawnZone.SpawnPoint;
-        }
-    }
-
     [SerializeField]
     SpawnZone spawnZone;
+
+    public void ConfigureSpawn (Shape shape) {
+        spawnZone.ConfigureSpawn(shape);
+    }
 
     void OnEnable () {
         Current = this;
