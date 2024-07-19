@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6778a2788f316c408f50bd89bd51d00, type: 3}
-  m_Name: ShapeFactory
+  m_Name: CompositeShapeFactory
   m_EditorClassIdentifier: 
   prefabs:
-  - {fileID: 6894008831079085828, guid: 29a0bf27eaf71c748a1c61f08a14f22d, type: 3}
-  - {fileID: 2876464098946562953, guid: 721bed069cc4e8049af024c95caeebc3, type: 3}
-  - {fileID: 2492153849681784789, guid: 71dab6b26200cd8499deaa4b7a55dd08, type: 3}
+  - {fileID: 3703883709522888770, guid: 54fb2fd2ae7b3a64fa13d229b088c392, type: 3}
+  - {fileID: 4673543390941401509, guid: 8e43baec4173d484e835e10d054d63cf, type: 3}
+  - {fileID: 5486875268894149439, guid: 68d1b55d26b9d554c9e6a9c788bc84fb, type: 3}
   materials:
   - {fileID: 2100000, guid: aac6cab27b29d7441808096748aae4d1, type: 2}
   - {fileID: 2100000, guid: 51ceba7d3bbfe6748ab3eada6bf21e80, type: 2}

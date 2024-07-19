@@ -12,8 +12,8 @@ public class GameLevel : PersistableObject {
     [SerializeField]
     SpawnZone spawnZone;
 
-    public void ConfigureSpawn (Shape shape) {
-        spawnZone.ConfigureSpawn(shape);
+    public Shape SpawnShape () {
+        return spawnZone.SpawnShape();
     }
 
     void OnEnable () {

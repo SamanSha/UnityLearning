@@ -332,7 +332,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnConfig:
-    movementDirection: 0
+    factories:
+    - {fileID: 11400000, guid: 1608ef00581e9de4e8f304af0fd2696e, type: 2}
+    - {fileID: 11400000, guid: e22f539dd1b8fbc4d9cf8efff10bf8fe, type: 2}
+    movementDirection: 2
     speed:
       min: 1.5
       max: 2.5
@@ -352,6 +355,7 @@ MonoBehaviour:
       value:
         min: 0.25
         max: 1
+    uniformColor: 0
   surfaceOnly: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
