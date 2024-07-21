@@ -14,7 +14,7 @@ public class Game : PersistableObject {
     [SerializeField] KeyCode loadKey = KeyCode.L;
     [SerializeField] KeyCode newGameKey = KeyCode.N;
 
-    const int saveVersion = 5;
+    const int saveVersion = 6;
 
     List<Shape> shapes;
 
