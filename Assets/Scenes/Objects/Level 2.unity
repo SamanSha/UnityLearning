@@ -270,6 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fba4105e56d4aa4418b2cb1a7f808345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  persistentObjects: []
   spawnZone: {fileID: 1910620182}
 --- !u!4 &1527927477
 Transform:
@@ -330,6 +331,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7762ece1190ca8849a9bc1a686456fd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnConfig:
+    factories:
+    - {fileID: 11400000, guid: e22f539dd1b8fbc4d9cf8efff10bf8fe, type: 2}
+    movementDirection: 0
+    speed:
+      min: 0
+      max: 0
+    angularSpeed:
+      min: 0
+      max: 0
+    scale:
+      min: 0
+      max: 0
+    color:
+      hue:
+        min: 0
+        max: 0
+      saturation:
+        min: 0
+        max: 0
+      value:
+        min: 0
+        max: 0
+    uniformColor: 0
+    oscillationDirection: 0
+    oscillationAmplitude:
+      min: 0
+      max: 0
+    oscillationFrequency:
+      min: 0
+      max: 0
   surfaceOnly: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
