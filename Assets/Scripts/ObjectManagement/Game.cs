@@ -14,7 +14,7 @@ public class Game : PersistableObject {
     [SerializeField] KeyCode loadKey = KeyCode.L;
     [SerializeField] KeyCode newGameKey = KeyCode.N;
 
-    const int saveVersion = 6;
+    const int saveVersion = 7;
 
     List<Shape> shapes;
 
@@ -127,6 +127,7 @@ public class Game : PersistableObject {
         for (int i = 0; i < shapes.Count; i++) {
             shapes[i].GameUpdate();
         }
+        GameLevel.Current.GameUpdate();
         inGameUpdateLoop = false;
 
         creationProgress += Time.deltaTime * CreationSpeed;
